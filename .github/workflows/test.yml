@@ -20,7 +20,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ubuntu-advantage-tools
+          sudo apt-get install -y libsystemd-dev libsystemd0  
 
       - name: Install Python dependencies
         run: |
