@@ -1,0 +1,41 @@
+name: test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsystemd-dev libsystemd0
+          sudo apt-get install -y libdbus-1-dev libdbus-glib-1-dev
+          sudo apt-get install -y libgirepository1.0-dev
+          sudo apt-get install -y libcairo2-dev
+          sudo apt-get install -y gir1.2-gtk-3.0  # For GTK 3
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check Python and pytest versions
+        run: |
+          python --version
+          pytest --version
+
+      - name: Run pytest
+        run: |
+          pytest
